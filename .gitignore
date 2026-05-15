@@ -1,0 +1,27 @@
+# Root level
+.env
+.DS_Store
+Thumbs.db
+
+# Frontend
+frontend/node_modules/
+frontend/dist/
+frontend/build/
+frontend/.env
+frontend/.env.local
+frontend/.env.*.local
+frontend/coverage/
+
+# Backend
+backend/node_modules/
+backend/dist/
+backend/build/
+backend/.env
+backend/logs/
+backend/*.log
+
+# General
+.vscode/
+.idea/
+*.swp
+*.swo
