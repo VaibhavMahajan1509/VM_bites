@@ -1,6 +1,6 @@
 import Cart from "../models/Cart.model.js";
 
-// ================= ADD TO CART =================
+// ADD TO CART
 export const addToCart = async (req, res) => {
   try {
     const userId = req.user.userId;

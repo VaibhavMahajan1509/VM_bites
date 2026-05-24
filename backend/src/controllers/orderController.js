@@ -1,7 +1,7 @@
 import Order from "../models/Order.model.js";
 import Cart from "../models/Cart.model.js";
 
-// ================= PLACE ORDER =================
+// PLACE ORDER 
 export const placeOrder = async (req, res) => {
   try {
     const userId = req.user.userId;
@@ -31,7 +31,7 @@ export const placeOrder = async (req, res) => {
   }
 };
 
-// ================= USER ORDERS =================
+//  USER ORDERS 
 export const getUserOrders = async (req, res) => {
   try {
     const userId = req.user.userId;
@@ -50,7 +50,7 @@ export const getUserOrders = async (req, res) => {
   }
 };
 
-// ================= ADMIN: GET ALL ORDERS =================
+// ADMIN: GET ALL ORDERS 
 export const getAllOrders = async (req, res) => {
   try {
     const orders = await Order.find({})
@@ -68,7 +68,7 @@ export const getAllOrders = async (req, res) => {
   }
 };
 
-// ================= ADMIN: UPDATE ORDER STATUS =================
+// ADMIN: UPDATE ORDER STATUS 
 export const updateOrderStatus = async (req, res) => {
   try {
     const { id } = req.params;

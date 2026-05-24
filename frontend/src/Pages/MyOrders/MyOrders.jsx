@@ -20,18 +20,18 @@ const MyOrders = () => {
         error.response?.status === 401 ||
         error.response?.status === 403
       ) {
-        setOrders([]); // ✅ IMPORTANT FIX
+        setOrders([]); // 
         navigate("/");
       }
     }
   };
 
-  // 🔥 FIX: refetch + cleanup behavior
+  // FIX: refetch + cleanup behavior
   useEffect(() => {
     fetchOrders();
 
     return () => {
-      setOrders([]); // ✅ clears old data on unmount
+      setOrders([]); // clears old data on unmount
     };
   }, []);
 

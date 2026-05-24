@@ -242,18 +242,18 @@ const seedFoods = async () => {
   try {
     await mongoose.connect(process.env.MONGO_URI);
 
-    console.log("✅ MongoDB Connected");
+    console.log("MongoDB Connected");
 
     await Food.deleteMany({});
-    console.log("🧹 Old data removed");
+    console.log("Old data removed");
 
     await Food.insertMany(food_list);
-    console.log("🍔 Food inserted");
+    console.log("Food inserted");
 
     await mongoose.disconnect();
     process.exit(0);
   } catch (error) {
-    console.log("❌ Seeder Error:", error);
+    console.log("Seeder Error:", error);
     process.exit(1);
   }
 };

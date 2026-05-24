@@ -37,7 +37,7 @@ const LoginPopup = ({ setShowLogin, setUser }) => {
 
       alert(response.data.message);
 
-      // IMPORTANT: wait a bit for cookie to settle
+      // IMPORTANT
       setTimeout(() => {
         fetchCart();
       }, 200);

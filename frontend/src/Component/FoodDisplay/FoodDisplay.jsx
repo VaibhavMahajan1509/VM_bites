@@ -10,7 +10,7 @@ const FoodDisplay = ({ category, search }) => {
     return <p>Loading...</p>;
   }
 
-  // 🔥 FILTER LOGIC
+  // FILTER LOGIC
   const filteredFoods = food_list.filter((item) => {
 
     const matchesCategory =

@@ -2,7 +2,7 @@ import User from "../models/User.model.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
-// ================= SIGNUP =================
+// SIGNUP 
 export const signup = async (req, res) => {
   try {
     const { name, email, password } = req.body;
@@ -39,7 +39,7 @@ export const signup = async (req, res) => {
   }
 };
 
-// ================= LOGIN =================
+// LOGIN 
 export const login = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -92,7 +92,7 @@ export const login = async (req, res) => {
   }
 };
 
-// ================= ME =================
+// ME 
 export const me = async (req, res) => {
   try {
     const user = await User.findById(req.user.userId).select("-password");
@@ -103,7 +103,7 @@ export const me = async (req, res) => {
   }
 };
 
-// ================= LOGOUT =================
+// LOGOUT
 export const logout = (req, res) => {
   const options = {
     httpOnly: true,

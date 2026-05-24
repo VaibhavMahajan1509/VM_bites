@@ -1,3 +1,5 @@
+// AdminFoods.jsx
+
 import React, { useEffect, useState } from "react";
 import api from "../../config/api";
 
@@ -14,18 +16,33 @@ const AdminFoods = () => {
 
   const [loading, setLoading] = useState(false);
 
-  // ================= FETCH FOODS =================
+  // FETCH LOADING
+  const [fetchLoading, setFetchLoading] = useState(true);
+
+  // EDIT STATE
+  const [editId, setEditId] = useState(null);
+
+  // FETCH FOODS
   const fetchFoods = async () => {
     try {
+
+      setFetchLoading(true);
+
       const res = await api.get("/foods");
 
       setFoods(res.data || []);
+
     } catch (err) {
+
       console.log("Fetch Foods Error:", err);
+
+    } finally {
+
+      setFetchLoading(false);
     }
   };
 
-  // ================= HANDLE CHANGE =================
+  // HANDLE CHANGE
   const handleChange = (e) => {
     setForm({
       ...form,
@@ -33,16 +50,41 @@ const AdminFoods = () => {
     });
   };
 
-  // ================= ADD FOOD =================
+  // EDIT FOOD
+  const editFood = (food) => {
+    setEditId(food._id);
+
+    setForm({
+      name: food.name,
+      price: food.price,
+      image: food.image,
+      description: food.description,
+      category: food.category,
+    });
+  };
+
+  // ADD / UPDATE FOOD
   const addFood = async (e) => {
     e.preventDefault();
 
     try {
+
       setLoading(true);
 
-      await api.post("/admin/food", form);
+      if (editId) {
 
-      alert("Food added successfully");
+        await api.put(`/admin/food/${editId}`, form);
+
+        alert("Food updated successfully");
+
+        setEditId(null);
+
+      } else {
+
+        await api.post("/admin/food", form);
+
+        alert("Food added successfully");
+      }
 
       setForm({
         name: "",
@@ -55,17 +97,20 @@ const AdminFoods = () => {
       fetchFoods();
 
     } catch (err) {
-      console.log("Add Food Error:", err);
+
+      console.log("Food Error:", err);
 
       alert(
-        err.response?.data?.message || "Failed to add food"
+        err.response?.data?.message || "Operation failed"
       );
+
     } finally {
+
       setLoading(false);
     }
   };
 
-  // ================= DELETE FOOD =================
+  // DELETE FOOD
   const deleteFood = async (id) => {
     try {
 
@@ -82,6 +127,7 @@ const AdminFoods = () => {
       fetchFoods();
 
     } catch (err) {
+
       console.log("Delete Food Error:", err);
 
       alert(
@@ -90,23 +136,42 @@ const AdminFoods = () => {
     }
   };
 
-  // ================= LOAD DATA =================
+  // LOAD DATA
   useEffect(() => {
     fetchFoods();
   }, []);
 
-  return (
-    <div className="p-6">
+  // LOADING UI
+  if (fetchLoading) {
+    return (
+      <div className="flex items-center justify-center min-h-[60vh]">
 
-      {/* ================= TITLE ================= */}
-      <h1 className="text-3xl font-bold mb-6">
+        <div className="flex flex-col items-center gap-4">
+
+          <div className="w-12 h-12 border-4 border-green-500 border-t-transparent rounded-full animate-spin"></div>
+
+          <p className="text-gray-600 text-lg font-medium">
+            Loading foods...
+          </p>
+
+        </div>
+
+      </div>
+    );
+  }
+
+  return (
+    <div className="p-4 sm:p-6 max-w-7xl mx-auto">
+
+      {/* TITLE */}
+      <h1 className="text-2xl sm:text-3xl font-bold mb-6">
         Manage Foods
       </h1>
 
-      {/* ================= ADD FOOD FORM ================= */}
+      {/* FORM */}
       <form
         onSubmit={addFood}
-        className="bg-white p-5 rounded shadow mb-8 grid gap-3"
+        className="bg-white p-4 sm:p-5 rounded shadow mb-8 grid gap-3"
       >
 
         <input
@@ -115,7 +180,7 @@ const AdminFoods = () => {
           placeholder="Food Name"
           value={form.name}
           onChange={handleChange}
-          className="border p-3 rounded"
+          className="border p-3 rounded w-full"
           required
         />
 
@@ -125,7 +190,7 @@ const AdminFoods = () => {
           placeholder="Price"
           value={form.price}
           onChange={handleChange}
-          className="border p-3 rounded"
+          className="border p-3 rounded w-full"
           required
         />
 
@@ -135,7 +200,7 @@ const AdminFoods = () => {
           placeholder="Image URL"
           value={form.image}
           onChange={handleChange}
-          className="border p-3 rounded"
+          className="border p-3 rounded w-full"
           required
         />
 
@@ -144,7 +209,7 @@ const AdminFoods = () => {
           placeholder="Description"
           value={form.description}
           onChange={handleChange}
-          className="border p-3 rounded"
+          className="border p-3 rounded w-full"
           rows="3"
         />
 
@@ -154,7 +219,7 @@ const AdminFoods = () => {
           placeholder="Category"
           value={form.category}
           onChange={handleChange}
-          className="border p-3 rounded"
+          className="border p-3 rounded w-full"
         />
 
         <button
@@ -162,12 +227,18 @@ const AdminFoods = () => {
           disabled={loading}
           className="bg-green-600 hover:bg-green-700 text-white py-3 rounded"
         >
-          {loading ? "Adding..." : "Add Food"}
+          {loading
+            ? editId
+              ? "Updating..."
+              : "Adding..."
+            : editId
+            ? "Update Food"
+            : "Add Food"}
         </button>
 
       </form>
 
-      {/* ================= FOOD LIST ================= */}
+      {/* FOOD LIST */}
       <div className="grid gap-4">
 
         {foods.length === 0 ? (
@@ -176,19 +247,20 @@ const AdminFoods = () => {
           foods.map((food) => (
             <div
               key={food._id}
-              className="bg-white p-4 rounded shadow flex justify-between items-center"
+              className="bg-white p-4 rounded shadow flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4"
             >
 
-              <div className="flex items-center gap-4">
+              {/* LEFT */}
+              <div className="flex flex-col sm:flex-row items-center sm:items-start gap-4 text-center sm:text-left">
 
                 <img
                   src={food.image}
                   alt={food.name}
-                  className="w-20 h-20 object-cover rounded"
+                  className="w-20 h-20 object-cover rounded shrink-0"
                 />
 
                 <div>
-                  <h2 className="font-semibold text-lg">
+                  <h2 className="font-semibold text-lg break-words">
                     {food.name}
                   </h2>
 
@@ -196,19 +268,31 @@ const AdminFoods = () => {
                     ₹{food.price}
                   </p>
 
-                  <p className="text-sm text-gray-500">
+                  <p className="text-sm text-gray-500 break-words">
                     {food.category}
                   </p>
                 </div>
 
               </div>
 
-              <button
-                onClick={() => deleteFood(food._id)}
-                className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded"
-              >
-                Delete
-              </button>
+              {/* BUTTONS */}
+              <div className="flex flex-wrap justify-center gap-2 w-full sm:w-auto">
+
+                <button
+                  onClick={() => editFood(food)}
+                  className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded w-full sm:w-auto"
+                >
+                  Edit
+                </button>
+
+                <button
+                  onClick={() => deleteFood(food._id)}
+                  className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded w-full sm:w-auto"
+                >
+                  Delete
+                </button>
+
+              </div>
 
             </div>
           ))

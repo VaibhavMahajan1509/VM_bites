@@ -10,7 +10,7 @@ import adminRoutes from "./routes/adminRoutes.js";
 
 const app = express();
 
-// ================= CORS FIX =================
+// CORS 
 app.use(
   cors({
     origin: [
@@ -23,7 +23,7 @@ app.use(
 app.use(express.json());
 app.use(cookieParser());
 
-// ================= ROUTES =================
+// ROUTES
 app.use("/api/auth", authRoutes);
 app.use("/api/foods", foodRoutes);
 app.use("/api/cart", cartRoutes);

@@ -9,7 +9,7 @@ const AdminDashboard = () => {
   return (
     <div className="min-h-screen flex">
 
-      {/* ================= SIDEBAR ================= */}
+      {/* SIDEBAR */}
       <div className="w-[250px] bg-gray-900 text-white p-5">
 
         <h1 className="text-2xl font-bold mb-8">
@@ -43,7 +43,7 @@ const AdminDashboard = () => {
         </div>
       </div>
 
-      {/* ================= CONTENT ================= */}
+      {/*  CONTENT  */}
       <div className="flex-1 bg-gray-100 p-6">
 
         {tab === "orders" && <AdminOrders />}

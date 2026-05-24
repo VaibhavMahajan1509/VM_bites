@@ -1,27 +1,36 @@
+// AdminOrders.jsx
+
 import React, { useEffect, useState } from "react";
 import api from "../../config/api";
 
 const AdminOrders = () => {
   const [orders, setOrders] = useState([]);
+
   const [loading, setLoading] = useState(true);
 
-  // ================= FETCH ORDERS =================
+  // FETCH ORDERS
   const fetchOrders = async () => {
-  try {
-    setLoading(true);
+    try {
 
-    const res = await api.get("/admin/orders");
+      setLoading(true);
 
-    setOrders(res.data || []);
+      const res = await api.get("/admin/orders");
 
-  } catch (error) {
-    console.log("Fetch Orders Error:", error);
-    setOrders([]);
-  } finally {
-    setLoading(false);
-  }
-};
-  // ================= UPDATE STATUS =================
+      setOrders(res.data || []);
+
+    } catch (error) {
+
+      console.log("Fetch Orders Error:", error);
+
+      setOrders([]);
+
+    } finally {
+
+      setLoading(false);
+    }
+  };
+
+  // UPDATE STATUS
   const updateStatus = async (orderId, status) => {
     try {
 
@@ -32,6 +41,7 @@ const AdminOrders = () => {
       fetchOrders();
 
     } catch (error) {
+
       console.log("Update Status Error:", error);
     }
   };
@@ -40,14 +50,30 @@ const AdminOrders = () => {
     fetchOrders();
   }, []);
 
+  // LOADING UI
   if (loading) {
-    return <h1 className="p-6">Loading...</h1>;
+    return (
+      <div className="flex items-center justify-center min-h-[60vh]">
+
+        <div className="flex flex-col items-center gap-4">
+
+          <div className="w-12 h-12 border-4 border-green-500 border-t-transparent rounded-full animate-spin"></div>
+
+          <p className="text-gray-600 text-lg font-medium">
+            Loading orders...
+          </p>
+
+        </div>
+
+      </div>
+    );
   }
 
   return (
-    <div className="p-6">
+    <div className="p-4 sm:p-6 max-w-7xl mx-auto">
 
-      <h1 className="text-2xl font-bold mb-6">
+      {/* TITLE */}
+      <h1 className="text-2xl sm:text-3xl font-bold mb-6">
         Admin Orders
       </h1>
 
@@ -60,11 +86,12 @@ const AdminOrders = () => {
 
             <div
               key={order._id}
-              className="bg-white p-5 rounded shadow border"
+              className="bg-white p-4 sm:p-5 rounded shadow border"
             >
 
               {/* USER INFO */}
-              <div className="mb-3">
+              <div className="mb-4 break-words">
+
                 <p>
                   <span className="font-semibold">
                     Customer:
@@ -78,33 +105,38 @@ const AdminOrders = () => {
                   </span>{" "}
                   {order.userId?.email}
                 </p>
+
               </div>
 
               {/* ITEMS */}
-              <div className="mb-3">
+              <div className="mb-4">
 
-                <p className="font-semibold mb-2">
+                <p className="font-semibold mb-3">
                   Items:
                 </p>
 
                 {order.items.map((item) => (
                   <div
                     key={item._id}
-                    className="flex items-center gap-3 mb-2"
+                    className="flex flex-col sm:flex-row items-center sm:items-start gap-3 mb-3 text-center sm:text-left"
                   >
 
                     <img
                       src={item.image}
                       alt={item.name}
-                      className="w-14 h-14 object-cover rounded"
+                      className="w-16 h-16 object-cover rounded shrink-0"
                     />
 
                     <div>
-                      <p>{item.name}</p>
+
+                      <p className="break-words">
+                        {item.name}
+                      </p>
 
                       <p className="text-sm text-gray-600">
                         ₹{item.price} × {item.quantity}
                       </p>
+
                     </div>
 
                   </div>
@@ -113,9 +145,10 @@ const AdminOrders = () => {
               </div>
 
               {/* ORDER INFO */}
-              <div className="flex items-center justify-between mt-4">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mt-4">
 
                 <div>
+
                   <p>
                     <span className="font-semibold">
                       Total:
@@ -129,6 +162,7 @@ const AdminOrders = () => {
                     </span>{" "}
                     {order.status}
                   </p>
+
                 </div>
 
                 {/* STATUS UPDATE */}
@@ -137,8 +171,9 @@ const AdminOrders = () => {
                   onChange={(e) =>
                     updateStatus(order._id, e.target.value)
                   }
-                  className="border p-2 rounded"
+                  className="border p-2 rounded w-full sm:w-52"
                 >
+
                   <option value="pending">
                     Pending
                   </option>

@@ -8,7 +8,7 @@ const StoreContextProvider = (props) => {
   const [cartItems, setCartItems] = useState({});
   const [loading, setLoading] = useState(true);
 
-  // ================= FOODS =================
+  // FOODS
   const fetchFoods = async () => {
     try {
       const res = await api.get("/foods");
@@ -19,7 +19,7 @@ const StoreContextProvider = (props) => {
     }
   };
 
-  // ================= CART =================
+  // CART 
   const fetchCart = async () => {
     try {
       const res = await api.get("/cart");
@@ -43,7 +43,7 @@ const StoreContextProvider = (props) => {
     }
   };
 
-  // ================= ADD TO CART =================
+  // ADD TO CART 
   const addToCart = async (itemId) => {
     const id = String(itemId);
 
@@ -62,7 +62,7 @@ const StoreContextProvider = (props) => {
     }
   };
 
-  // ================= REMOVE FROM CART =================
+  // REMOVE FROM CART 
   const removeFromCart = async (itemId) => {
     const id = String(itemId);
 
@@ -87,7 +87,7 @@ const StoreContextProvider = (props) => {
     }
   };
 
-  // ================= TOTAL AMOUNT =================
+  // TOTAL AMOUNT
   const getTotalCartAmount = () => {
     let total = 0;
 
@@ -102,12 +102,12 @@ const StoreContextProvider = (props) => {
     return total;
   };
 
-  // ================= RESET CART (FIX ADDED) =================
+  // RESET CART
   const resetCart = () => {
     setCartItems({});
   };
 
-  // ================= INIT LOAD =================
+  // INIT LOAD 
   useEffect(() => {
     const loadData = async () => {
       setLoading(true);
@@ -128,7 +128,7 @@ const StoreContextProvider = (props) => {
     removeFromCart,
     getTotalCartAmount,
     fetchCart,
-    resetCart, // ✅ FIXED EXPORT
+    resetCart, // 
     loading,
   };
 

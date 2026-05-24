@@ -1,7 +1,7 @@
 import Food from "../models/Food.model.js";
 import Order from "../models/Order.model.js";
 
-// ================= ADD FOOD =================
+// ADD FOOD 
 export const addFood = async (req, res) => {
   try {
     const { name, price, image, description, category } = req.body;
@@ -29,8 +29,9 @@ export const addFood = async (req, res) => {
   }
 };
 
-// ================= UPDATE FOOD =================
+//  UPDATE FOOD 
 export const updateFood = async (req, res) => {
+  
   try {
     const { id } = req.params;
 
@@ -53,7 +54,7 @@ export const updateFood = async (req, res) => {
   }
 };
 
-// ================= DELETE FOOD =================
+// DELETE FOOD 
 export const deleteFood = async (req, res) => {
   try {
     const { id } = req.params;
@@ -72,7 +73,7 @@ export const deleteFood = async (req, res) => {
   }
 };
 
-// ================= GET ALL ORDERS =================
+//  GET ALL ORDERS 
 export const getAllOrders = async (req, res) => {
   try {
     const orders = await Order.find({})
@@ -87,7 +88,7 @@ export const getAllOrders = async (req, res) => {
   }
 };
 
-// ================= UPDATE ORDER STATUS =================
+// UPDATE ORDER STATUS
 export const updateOrderStatus = async (req, res) => {
   try {
     const { id } = req.params;
