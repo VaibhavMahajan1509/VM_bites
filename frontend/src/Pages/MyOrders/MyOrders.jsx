@@ -4,10 +4,13 @@ import api from "../../config/api";
 
 const MyOrders = () => {
   const [orders, setOrders] = useState([]);
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
   const fetchOrders = async () => {
     try {
+      setLoading(true);
+
       const res = await api.get("/order/user", {
         withCredentials: true,
       });
@@ -16,22 +19,20 @@ const MyOrders = () => {
     } catch (error) {
       console.log(error);
 
-      if (
-        error.response?.status === 401 ||
-        error.response?.status === 403
-      ) {
-        setOrders([]); // 
+      if (error.response?.status === 401 || error.response?.status === 403) {
+        setOrders([]);
         navigate("/");
       }
+    } finally {
+      setLoading(false);
     }
   };
 
-  // FIX: refetch + cleanup behavior
   useEffect(() => {
     fetchOrders();
 
     return () => {
-      setOrders([]); // clears old data on unmount
+      setOrders([]);
     };
   }, []);
 
@@ -39,31 +40,26 @@ const MyOrders = () => {
     <div className="max-w-5xl mx-auto px-6 py-10">
       <h2 className="text-3xl font-bold mb-6">My Orders</h2>
 
-      {orders.length === 0 ? (
+      {loading ? (
+  <p className="text-gray-500">Loading orders...</p>
+) : orders.length === 0 ? (
         <p>No orders found</p>
       ) : (
         <div className="space-y-6">
           {orders.map((order) => (
-            <div
-              key={order._id}
-              className="border p-4 rounded-lg shadow-sm"
-            >
+            <div key={order._id} className="border p-4 rounded-lg shadow-sm">
               <div className="flex flex-wrap gap-2 mb-3">
                 {order.items.map((item, i) => (
                   <span key={i} className="text-sm text-gray-700">
-                    {item.foodId?.name} x {item.quantity}
+                    {item.name} x {item.quantity} {/* ✅ fixed */}
                   </span>
                 ))}
               </div>
 
-              <div className="flex justify-between">
-                <p className="font-semibold">
-                  Total: ₹{order.amount}
-                </p>
+              <div className="flex justify-between items-center">
+                <p className="font-semibold">Total: ₹{order.amount}</p>
 
-                <p className="text-orange-500">
-                  {order.status}
-                </p>
+                <p className="text-orange-500 capitalize">{order.status}</p>
               </div>
             </div>
           ))}

@@ -12,7 +12,9 @@ const Cart = () => {
 
   const navigate = useNavigate();
 
-  const isCartEmpty = !Object.values(cartItems).some((qty) => qty > 0);
+  const isCartEmpty = !Object.values(cartItems).some(
+    (qty) => qty > 0
+  );
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -20,7 +22,7 @@ const Cart = () => {
 
   return (
     <div className="mt-24 min-h-screen px-4">
-
+      
       {/* HEADER */}
       <div className="grid grid-cols-[1fr_1.5fr_1fr_1fr_1fr_0.5fr] text-gray-500 font-medium">
         <p>Items</p>
@@ -64,11 +66,11 @@ const Cart = () => {
 
                   <p>{item.name}</p>
 
-                  <p>${item.price}</p>
+                  <p>₹{item.price}</p>
 
                   <p>{qty}</p>
 
-                  <p>${item.price * qty}</p>
+                  <p>₹{item.price * qty}</p>
 
                   <p
                     onClick={() => removeFromCart(id)}
@@ -89,18 +91,17 @@ const Cart = () => {
       {!isCartEmpty && (
         <div className="mt-10 flex flex-col items-end gap-4">
           <h2 className="text-xl font-semibold">
-            Total: ${getTotalCartAmount()}
+            Total: ₹{getTotalCartAmount()}
           </h2>
 
           <button
             onClick={() => navigate("/order")}
-            className="bg-red-500 text-white px-6 py-2 rounded"
+            className="bg-red-500 text-white px-6 py-2 rounded hover:bg-red-600 transition"
           >
-            PLACE ORDER
+            PROCEED TO CHECKOUT
           </button>
         </div>
       )}
-
     </div>
   );
 };

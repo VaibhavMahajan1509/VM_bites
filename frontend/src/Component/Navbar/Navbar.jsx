@@ -18,7 +18,7 @@ const logoutHandler = async () => {
   } catch {}
 
   setUser(null);
-  resetCart();   // FIXED
+  resetCart();   
   navigate("/");
 };
 

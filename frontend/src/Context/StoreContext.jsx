@@ -19,15 +19,12 @@ const StoreContextProvider = (props) => {
     }
   };
 
-  // CART 
+  // CART
   const fetchCart = async () => {
     try {
       const res = await api.get("/cart");
 
-      const items =
-        res.data?.cart?.items ||
-        res.data?.items ||
-        [];
+      const items = res.data?.cart?.items || res.data?.items || [];
 
       let cartData = {};
 
@@ -43,7 +40,7 @@ const StoreContextProvider = (props) => {
     }
   };
 
-  // ADD TO CART 
+  // ADD TO CART
   const addToCart = async (itemId) => {
     const id = String(itemId);
 
@@ -62,7 +59,7 @@ const StoreContextProvider = (props) => {
     }
   };
 
-  // REMOVE FROM CART 
+  // REMOVE FROM CART
   const removeFromCart = async (itemId) => {
     const id = String(itemId);
 
@@ -103,11 +100,16 @@ const StoreContextProvider = (props) => {
   };
 
   // RESET CART
-  const resetCart = () => {
-    setCartItems({});
+  const resetCart = async () => {
+    try {
+      setCartItems({});
+      await fetchCart();
+    } catch (error) {
+      console.log(error);
+    }
   };
 
-  // INIT LOAD 
+  // INIT LOAD
   useEffect(() => {
     const loadData = async () => {
       setLoading(true);
@@ -128,7 +130,7 @@ const StoreContextProvider = (props) => {
     removeFromCart,
     getTotalCartAmount,
     fetchCart,
-    resetCart, // 
+    resetCart, //
     loading,
   };
 
